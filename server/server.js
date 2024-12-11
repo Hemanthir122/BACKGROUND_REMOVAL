@@ -1,20 +1,22 @@
-const express=require("express")
-const cros=require('cors');
-require('detenv').config();
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./configs/mongodb.js";
 
-//APP CONFIGURATION
-const PORT =process.env.PORT || 4000
-const app=express();
+// APP CONFIGURATION
+dotenv.config();
+const PORT = process.env.PORT || 4000;
+const app = express();
+await connectDB();
 
+// MIDDLEWARES
+app.use(express.json());
+app.use(cors());
 
-//MIddlewares
-app.use(express.json())
-app.use(cros());
+// API ROUTES
+app.get("/", (req, res) => {
+    res.send("hello");
+});
 
-
-//API ROUTES
-app.get('/',(req,res)=>{
-    res.send("hello")
-})
-
-app.listen(PORT,()=>console.log("server running on the port",PORT));
+// START THE SERVER
+app.listen(PORT, () => console.log("Server running on port", PORT));
